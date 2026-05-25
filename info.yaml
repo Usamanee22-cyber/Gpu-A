@@ -1,45 +1,45 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
-  discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
-  language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+  title:        "Ultimate AI GPU MegaCore 16Bit"      # ชื่อโปรเจกต์สุดอลังการของคุณน้า
+  author:       "The Ultimate CEO"                    # ใส่ชื่อคุณน้าตรงนี้ได้เลยย่ะ
+  discord:      ""                                    # เว้นว่างไว้ได้จ้า
+  description:  "16-Bit GPU Core with Embedded DLSS AI Super Resolution Engine" # คำอธิบายความปัง
+  language:     "Verilog" 
+  clock_hz:     10000000       # สั่งวิ่งความเร็วนาฬิกา 10 MHz นิ่มๆ ไอแพดไม่ล่ม
 
-  # How many tiles your design occupies? A single tile is about 167x108 uM.
-  tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
+  # เนื่องจากโค้ดใหญ่โตมหึมามาก ป้าขยับพื้นที่ชิปให้เป็น 1x2 (ใหญ่ขึ้นเท่าตัว) จะได้ไม่เบียดกันย่ะ!
+  tiles: "1x2"          
 
-  # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
+  # ชื่อโมดูลหลักตัวแม่ที่ป้าตั้งค่าให้ระบบตามหาตัวเจอ:
+  top_module:  "tt_um_ultimate_ai_gpu"
   
-  # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
+  # รายชื่อไฟล์โค้ด (.v) ที่ระบบต้องดึงไปหลอม:
   source_files:        
     - "project.v"
 
-# The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
+# การผูกสายไฟอินพุตและเอาต์พุต (Pinout) แมปเข้ากับโค้ด 16 บิตของคุณน้าเป๊ะๆ ย่ะ:
 pinout:
-  # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+  # ขาเข้า (Inputs)
+  ui[0]: "clk"                # สัญญาณนาฬิกาหลัก
+  ui[1]: "rst"                # ปุ่มรีเซ็ตระบบ
+  ui[2]: "video_in_pixel[0]"  # บิตพิกเซลภาพขาเข้า
+  ui[3]: "video_in_pixel[1]"
+  ui[4]: "video_in_pixel[2]"
+  ui[5]: "video_in_pixel[3]"
+  ui[6]: "ai_mode_control[0]" # ขาควบคุมโหมดสั่งเปิด-ปิด AI
+  ui[7]: "ai_mode_control[1]"
 
-  # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  # ขาออก (Outputs)
+  uo[0]: "h_sync_signal"      # สัญญาณยิงภาพแนวนอน
+  uo[1]: "v_sync_signal"      # สัญญาณยิงภาพแนวตั้ง
+  uo[2]: "final_rgb_r[0]"     # สัญญาณสีแดงตัวแม่
+  uo[3]: "final_rgb_r[1]"
+  uo[4]: "final_rgb_g[0]"     # สัญญาณสีเขียวตัวแม่
+  uo[5]: "final_rgb_g[1]"
+  uo[6]: "final_rgb_b[0]"     # สัญญาณสีน้ำเงินตัวแม่
+  uo[7]: "ai_process_ready"   # ไฟสถานะบอกว่า AI ประมวลผลภาพคมชัดเสร็จแล้ว
 
-  # Bidirectional pins
+  # ขาสองทิศทาง (Bidirectional) เว้นว่างไว้ตามกฎเหล็กย่ะ
   uio[0]: ""
   uio[1]: ""
   uio[2]: ""
