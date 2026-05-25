@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Install Typst (Fix for Error)
+        run: sudo apt-get update && sudo apt-get install -y typst
 
       - name: Build docs
         uses: TinyTapeout/tt-gds-action/docs@tt06
