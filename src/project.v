@@ -1,3 +1,50 @@
+`default_nettype none
+
+module tt_um_ai_gpu_core (
+    input  wire [7:0] ui_in,    // Inputs: ui_in[0]=clk, ui_in[1]=rst
+    output wire [7:0] uo_out,   // Outputs: สัญญาณจอและข้อมูลสี R-G-B
+    input  wire [7:0] uio_in,   // IO paths as inputs
+    output wire [7:0] uio_out,  // IO paths as outputs
+    output wire [7:0] uio_oe,   // IO paths direction control
+    input  wire       ena,      // always 1
+    input  wire       clk,      // master clock
+    input  wire       rst_n     // active low reset
+);
+
+    // แปลงระบบ Reset จาก Active Low ของ Tiny Tapeout เป็น Active High ตามโค้ดคุณน้า
+    wire sys_rst = !rst_n;
+
+    // สายไฟภายในสำหรับเชื่อมต่อกับแกนสมองของคุณน้า
+    wire [15:0] core_out_data;
+    wire        core_display_valid;
+    wire        core_h_sync;
+    wire        core_v_sync;
+    wire [7:0]  core_pixel_color;
+
+    // อัญเชิญแกนสมองชิป AI+GPU 16 บิตของคุณน้ามาสถิต ณ ที่นี้
+    AI_GPU_Mega_Core_16Bit my_gpu_core (
+        .clk(clk),
+        .rst(sys_rst),
+        .out_data(core_out_data),
+        .display_valid(core_display_valid),
+        .h_sync(core_h_sync),
+        .v_sync(core_v_sync),
+        .pixel_color(core_pixel_color)
+    );
+
+    // จัดระเบียบพอร์ตเอาต์พุตหลัก (uo_out) ส่งออกไปแสดงผลกราฟิก
+    assign uo_out[0] = core_h_sync;        // สัญญาณความถี่แนวนอน
+    assign uo_out[1] = core_v_sync;        // สัญญาณความถี่แนวตั้ง
+    assign uo_out[2] = core_display_valid; // สัญญาณแจ้งสถานะข้อมูลพร้อม
+    assign uo_out[7:3] = core_pixel_color[7:3]; // พ่นเฉดสีหลักออกไป 5 บิต
+
+    // จัดระเบียบพอร์ตเอาต์พุตเสริม (uio_out) ส่งค่าข้อมูลคำนวณ 16 บิตซอยย่อยออกไปดู
+    assign uio_out = core_out_data[7:0];  // ส่งข้อมูลบิตล่างออกทางพอร์ต IO
+    assign uio_oe  = 8'b1111_1111;        // สั่งให้พอร์ต IO ทำหน้าที่เป็นเอาต์พุตทั้งหมด
+
+endmodule
+
+// ------ โค้ดชิป AI GPU มหากาพย์ดั้งเดิมของคุณน้า (ห้ามแตะต้อง!) ------
 module AI_GPU_Mega_Core_16Bit (
     input wire clk,
     input wire rst,
