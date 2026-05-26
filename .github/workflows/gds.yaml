@@ -38,8 +38,17 @@ jobs:
   viewer:
     needs: gds
     runs-on: ubuntu-latest
+    
+    # 👑 สยบบั๊กด่านสุดท้าย: ประกาศชื่อห้องนิทรรศการให้ตรงตามกฎเหล็กปัจจุบันย่ะคุณน้า!
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
+      contents: write   # เปิดสิทธิ์ให้บ็อตเขียนข้อมูลลงคลังแสงได้
+      pages: write      # เปิดสิทธิ์ให้เดปลอยด์หน้าเว็บ Pages ได้
+      id-token: write   # ยืนยันตัวตนความปลอดภัยระดับพรีเมียม
+    
     steps:
+      # 🎨 สั่งรันยัยตัววาดภาพ 3D ดั้งเดิมของน้า
       - uses: TinyTapeout/tt-gds-action/viewer@tt06
